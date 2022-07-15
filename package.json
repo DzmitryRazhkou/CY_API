@@ -1,0 +1,14 @@
+{
+  "name": "cypressautomation_api",
+  "version": "1.0.0",
+  "description": "This Automation API project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dzmitry Razhkou",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^10.3.0"
+  }
+}
