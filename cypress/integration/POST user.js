@@ -17,7 +17,7 @@ let testEmail = ""
         cy.fixture('createUser').then((payload) => {
         cy.request({
             method: 'POST',
-            url: 'https://gorest.co.in/public/v2/users',
+            url: 'https://gorest.co.in/public/v1/users',
             headers: {
                 'Authorization': 'Bearer ' + token
             },
@@ -30,13 +30,32 @@ let testEmail = ""
         }).then((res) => {
             cy.log(JSON.stringify(res))
             expect(res.status).to.eq(201)
-            // expect(res.body.meta).to.be.null
-            expect(res.body).has.property('name', payload.name)
-            expect(res.body).has.property('email', testEmail) 
-            expect(res.body).has.property('gender', payload.gender) 
-            expect(res.body).has.property('status', payload.status) 
-        })
-    })
+            expect(res.body.meta).to.be.null
+            expect(res.body.data).has.property('name', payload.name)
+            expect(res.body.data).has.property('email', testEmail) 
+            expect(res.body.data).has.property('gender', payload.gender) 
+            expect(res.body.data).has.property('status', payload.status) 
+        }).then((res) => {
+
+            const userId = res.body.data.id
+            cy.log('User id is: ' +userId)
+
+            cy.request({
+                method: 'GET',
+                url: 'https://gorest.co.in/public/v1/users/' +userId,
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+
+            }).then((res) => {
+                expect(res.status).to.eq(200)
+                expect(res.body.data).has.property('id', userId)
+                expect(res.body.data).has.property('name', payload.name)
+                expect(res.body.data).has.property('status', payload.status) 
+            })
+
+           })
+       })
     })
 
 })
